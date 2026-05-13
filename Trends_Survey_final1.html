@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trends & Footwear – Full Customer Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#7C3AED;--gold-l:#A78BFA;--gold-d:#4F46E5;
+  --dark:#F8F7FF;--dark2:#FFFFFF;--dark3:#F3F0FF;--dark4:#EDE9FE;
+  --cream:#1E1B4B;--cream2:#312E81;--muted:#6B7280;
+  --accent:#F43F5E;--teal:#0891B2;--green:#059669;
+  --r:14px;--rs:8px;
+}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#f0f4ff 0%,#fdf2ff 55%,#fff0f6 100%);background-attachment:fixed;color:var(--cream);min-height:100vh;overflow-x:hidden}
+
+/* HERO */
+.hero{position:relative;text-align:center;padding:56px 20px 48px;background:linear-gradient(135deg,#4F46E5 0%,#7C3AED 50%,#DB2777 100%);border-bottom:none;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% -10%,rgba(255,255,255,.15),transparent 65%),repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 1px,transparent 1px 56px),repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 56px);pointer-events:none}
+.shoe-anim{font-size:60px;display:block;margin-bottom:10px;animation:float 3.2s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.store-pill{display:inline-block;font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.9);padding:5px 18px;border:1px solid rgba(255,255,255,.4);border-radius:40px;margin-bottom:14px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(34px,6vw,68px);font-weight:900;color:#FFFFFF;line-height:1.05;letter-spacing:-1px}
+.hero h1 span{color:#FDE68A;display:block}
+.hero-sub{margin-top:12px;font-size:14px;color:#6B7280;font-weight:300;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6;color:rgba(255,255,255,.82)}
+.hero-stats{display:flex;justify-content:center;gap:24px;margin-top:20px;flex-wrap:wrap}
+.hstat{text-align:center}
+.hstat-n{font-size:22px;font-weight:600;color:#FDE68A}
+.hstat-l{font-size:11px;color:rgba(255,255,255,.7);letter-spacing:1px}
+
+/* PROGRESS */
+.prog-bar{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(124,58,237,.12);box-shadow:0 2px 12px rgba(79,70,229,.08);padding:10px 20px;display:flex;align-items:center;gap:12px}
+.pb-bg{flex:1;height:5px;background:#EDE9FE;border-radius:5px;overflow:hidden}
+.pb-fill{height:100%;background:linear-gradient(90deg,#4F46E5,#7C3AED,#A78BFA);border-radius:5px;transition:width .7s cubic-bezier(.4,0,.2,1);width:0%}
+.pb-pct{font-size:12px;color:#4F46E5;font-weight:600;min-width:36px;text-align:right}
+.xp-pill{background:#EDE9FE;border:1px solid rgba(79,70,229,.3);color:#4F46E5;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.section-pill{background:#FDF4FF;border:1px solid rgba(124,58,237,.25);color:#7C3AED;font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+
+/* WRAP */
+.wrap{max-width:720px;margin:0 auto;padding:32px 16px 100px}
+
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;gap:14px;margin:40px 0 20px;opacity:0;transition:opacity .5s .1s}
+.sec-head.vis{opacity:1}
+.sh-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.3),transparent)}
+.sh-label{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4F46E5;white-space:nowrap}
+
+/* QUESTION CARD */
+.qc{background:#FFFFFF;border:1px solid rgba(124,58,237,.14);border-radius:var(--r);padding:28px;margin-bottom:14px;opacity:0;transform:translateY(20px);transition:opacity .45s,transform .45s cubic-bezier(.4,0,.2,1);display:none;box-shadow:0 2px 16px rgba(79,70,229,.06)}
+.qc.show{display:block}
+.qc.vis{opacity:1;transform:translateY(0)}
+.qc.active{border-color:rgba(124,58,237,.45);box-shadow:0 4px 24px rgba(79,70,229,.12)}
+.qc.active::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#4F46E5,#7C3AED,#DB2777);margin:-28px -28px 24px;border-radius:var(--r) var(--r) 0 0}
+
+/* SUB CARD */
+.sub-wrap{display:none;flex-direction:column;gap:12px;margin-top:14px;animation:slin .38s ease}
+.sub-wrap.open{display:flex}
+@keyframes slin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.qc.sub{background:#FAF5FF;border-color:rgba(124,58,237,.18);border-left:3px solid #7C3AED;border-radius:0 var(--r) var(--r) 0;margin-left:20px;padding:22px 22px 22px 20px}
+.qc.sub.active{border-left-color:#4F46E5}
+
+/* Q LABEL */
+.ql{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.qnum{width:30px;height:30px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#FFFFFF;border-radius:50%;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qnum.s{background:#EDE9FE;border:1px solid rgba(79,70,229,.3);color:#4F46E5;font-size:11px}
+.qtag{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7C3AED;padding:3px 8px;border:1px solid rgba(124,58,237,.22);border-radius:20px;background:#FAF5FF}
+.qtext{font-size:17px;font-weight:500;color:#1E1B4B;line-height:1.45;margin-bottom:20px}
+.qhint{font-size:12px;color:#6B7280;font-style:italic;margin-top:-14px;margin-bottom:16px}
+
+/* OPTIONS */
+.opts{display:grid;gap:9px;grid-template-columns:1fr}
+.opts.g2{grid-template-columns:1fr 1fr}
+.opt{background:#F9FAFB;border:1px solid rgba(124,58,237,.14);border-radius:var(--rs);color:#1E1B4B;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;text-align:left;padding:13px 16px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;line-height:1.35}
+.opt:hover{border-color:#7C3AED;background:#F3F0FF;transform:translateX(3px)}
+.opt.sel{border-color:#4F46E5;background:#EDE9FE;color:#1E1B4B}
+.opt.sel::after{content:'✓';position:absolute;right:14px;color:#4F46E5;font-size:14px;font-weight:700}
+.oi{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+.chip{padding:7px 14px;border:1px solid rgba(124,58,237,.2);border-radius:40px;font-size:12px;color:#4B5563;background:#F5F3FF;cursor:pointer;transition:all .2s}
+.chip:hover{border-color:#7C3AED;color:#1E1B4B;background:#EDE9FE}
+.chip.sel{border-color:#4F46E5;background:#4F46E5;color:#FFFFFF;font-weight:500}
+.multi-note{font-size:11px;color:#7C3AED;margin-bottom:10px;display:flex;align-items:center;gap:5px;font-weight:500}
+
+/* STARS / EMOJI RATING */
+.star-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:6px}
+.star-btn{width:46px;height:46px;background:#F5F3FF;border:1px solid rgba(124,58,237,.18);border-radius:var(--rs);font-size:20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.star-btn:hover,.star-btn.lit{background:#EDE9FE;border-color:#7C3AED;transform:scale(1.12)}
+.rating-group{margin-bottom:16px}
+.rating-label{font-size:12px;color:#374151;margin-bottom:7px;font-weight:500}
+
+/* NPS */
+.nps-row{display:flex;gap:5px;flex-wrap:wrap}
+.nps-btn{min-width:42px;height:42px;background:#F5F3FF;border:1px solid rgba(124,58,237,.18);border-radius:var(--rs);font-size:11px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-family:'DM Sans',sans-serif;color:#4B5563;padding:2px}
+.nps-btn span.ne{font-size:15px}
+.nps-btn:hover,.nps-btn.lit{background:#4F46E5;border-color:#4F46E5;color:#FFFFFF}
+.nps-lbl{font-size:12px;color:#7C3AED;margin-top:6px;min-height:18px;font-weight:500}
+
+/* TEXTAREA */
+.ta{width:100%;background:#F9FAFB;border:1px solid rgba(124,58,237,.2);border-radius:var(--rs);color:#1E1B4B;font-family:'DM Sans',sans-serif;font-size:13px;padding:13px 15px;resize:vertical;min-height:85px;outline:none;transition:border-color .2s;line-height:1.55}
+.ta:focus{border-color:#7C3AED;box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.ta::placeholder{color:#9CA3AF}
+
+/* SCALE */
+.scale-row{display:flex;gap:6px;flex-wrap:wrap}
+.scale-btn{min-width:44px;height:40px;background:#F5F3FF;border:1px solid rgba(124,58,237,.18);border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;color:#4B5563;font-family:'DM Sans',sans-serif}
+.scale-btn:hover,.scale-btn.sel{background:#4F46E5;border-color:#4F46E5;color:#FFFFFF}
+
+/* NEXT BTN */
+.nbtn{display:none;margin-top:20px;padding:12px 28px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#FFFFFF;border:none;border-radius:40px;box-shadow:0 4px 14px rgba(79,70,229,.28);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:all .22s;align-items:center;gap:7px}
+.nbtn:hover{transform:scale(1.04)}
+.nbtn.vis{display:inline-flex}
+
+/* SUBMIT */
+.sbtn{width:100%;padding:18px;background:linear-gradient(135deg,#4F46E5,#7C3AED,#DB2777);color:#FFFFFF;border:none;border-radius:var(--r);font-family:'Playfair Display',serif;font-size:19px;font-weight:700;cursor:pointer;margin-top:28px;display:none;transition:all .3s;box-shadow:0 6px 28px rgba(79,70,229,.28)}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(79,70,229,.38)}
+.sbtn.vis{display:block}
+
+/* THANK YOU */
+.ty{display:none;text-align:center;padding:70px 20px;animation:fdin .7s ease}
+@keyframes fdin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.ty.show{display:block}
+.ty-icon{font-size:72px;display:block;margin-bottom:20px;animation:bonce .55s .2s both}
+@keyframes bonce{0%{transform:scale(0)}60%{transform:scale(1.18)}100%{transform:scale(1)}}
+.ty h2{font-family:'Playfair Display',serif;font-size:40px;color:#1E1B4B;margin-bottom:10px}
+.ty p{font-size:15px;color:#6B7280;max-width:380px;margin:0 auto 20px;line-height:1.6}
+.xp-earn{display:inline-block;background:linear-gradient(135deg,#EDE9FE,#FCE7F3);border:1px solid rgba(79,70,229,.3);color:#4F46E5;font-size:20px;font-weight:700;padding:12px 32px;border-radius:40px}
+.coupon{background:linear-gradient(135deg,#F0F4FF,#FDF4FF);border:2px dashed #7C3AED;border-radius:var(--r);padding:26px;margin-top:28px;position:relative;overflow:hidden}
+.coupon::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 50%,rgba(201,168,76,.09),transparent 55%);pointer-events:none}
+.c-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#7C3AED;font-weight:600;margin-bottom:4px}
+.c-val{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;background:linear-gradient(135deg,#4F46E5,#DB2777);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.c-code{margin-top:14px;display:inline-block;background:#1E1B4B;border:1px solid rgba(79,70,229,.4);color:#FFFFFF;font-size:16px;font-weight:600;letter-spacing:5px;padding:9px 22px;border-radius:var(--rs)}
+
+@media(max-width:480px){.opts.g2{grid-template-columns:1fr}.qc{padding:18px}.hero h1{font-size:32px}.qtext{font-size:15px}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="shoe-anim">👟</span>
+  <div class="store-pill">360° Customer Feedback Survey</div>
+  <h1>Trends<span>& Footwear</span></h1>
+  <p class="hero-sub">Help us walk in your shoes. Your honest feedback shapes every corner of our store.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">50+</div><div class="hstat-l">Questions</div></div>
+    <div class="hstat"><div class="hstat-n">~6 min</div><div class="hstat-l">To complete</div></div>
+    <div class="hstat"><div class="hstat-n">₹200</div><div class="hstat-l">Reward coupon</div></div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-bar">
+  <div class="pb-bg"><div class="pb-fill" id="pbFill"></div></div>
+  <div class="pb-pct" id="pbPct">0%</div>
+  <div class="xp-pill" id="xpPill">⚡ 0 XP</div>
+  <div class="section-pill" id="secPill">Starting…</div>
+</div>
+
+<!-- SURVEY BODY -->
+<div class="wrap" id="survWrap">
+
+<!-- ══════════════════════════════════════
+     SECTION A — VISITOR PROFILE
+══════════════════════════════════════ -->
+<div class="sec-head" id="secA"><div class="sh-line"></div><span class="sh-label">👤 A · Visitor Profile</span><div class="sh-line"></div></div>
+
+<!-- A1 -->
+<div class="qc show" id="A1">
+  <div class="ql"><div class="qnum">A1</div><span class="qtag">Visit Purpose</span></div>
+  <p class="qtext">What is the primary purpose of your visit to Trends & Footwear today?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'A1','buy')"><span class="oi">🛍️</span>Buying footwear for myself</button>
+    <button class="opt" onclick="pick(this,'A1','gift')"><span class="oi">🎁</span>Buying as a gift for someone else</button>
+    <button class="opt" onclick="pick(this,'A1','browse')"><span class="oi">👀</span>Just browsing / window shopping</button>
+    <button class="opt" onclick="pick(this,'A1','exchange')"><span class="oi">🔁</span>Exchange or return of a previous purchase</button>
+    <button class="opt" onclick="pick(this,'A1','repair')"><span class="oi">🔧</span>Repair / sole replacement enquiry</button>
+    <button class="opt" onclick="pick(this,'A1','info')"><span class="oi">ℹ️</span>Price / product information only</button>
+  </div>
+  <!-- sub: browse -->
+  <div class="sub-wrap" id="A1s-browse">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">A1a</div><span class="qtag">Browse Reason</span></div>
+      <p class="qtext" style="font-size:14px">What held you back from making a purchase today?</p>
+      <div class="opts">
+        <button class="opt" onclick="subpick(this,'A1a')"><span class="oi">💸</span>Prices felt too high</button>
+        <button class="opt" onclick="subpick(this,'A1a')"><span class="oi">📐</span>Couldn't find my size</button>
+        <button class="opt" onclick="subpick(this,'A1a')"><span class="oi">🎨</span>Styles didn't match my taste</button>
+        <button class="opt" onclick="subpick(this,'A1a')"><span class="oi">🕐</span>Planning to buy later</button>
+        <button class="opt" onclick="subpick(this,'A1a')"><span class="oi">🤷</span>Just exploring options</button>
+      </div>
+    </div>
+  </div>
+  <!-- sub: exchange -->
+  <div class="sub-wrap" id="A1s-exchange">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">A1b</div><span class="qtag">Exchange Reason</span></div>
+      <p class="qtext" style="font-size:14px">What is the reason for the exchange / return?</p>
+      <div class="opts">
+        <button class="opt" onclick="subpick(this,'A1b')"><span class="oi">⚠️</span>Product was defective / damaged</button>
+        <button class="opt" onclick="subpick(this,'A1b')"><span class="oi">📐</span>Wrong size delivered / packed</button>
+        <button class="opt" onclick="subpick(this,'A1b')"><span class="oi">😞</span>Product didn't match in-store appearance</button>
+        <button class="opt" onclick="subpick(this,'A1b')"><span class="oi">🎁</span>Unwanted gift — wrong preference</button>
+        <button class="opt" onclick="subpick(this,'A1b')"><span class="oi">👟</span>Comfort / fit issue after wearing</button>
+      </div>
+    </div>
+  </div>
+  <!-- sub: gift -->
+  <div class="sub-wrap" id="A1s-gift">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">A1c</div><span class="qtag">Gift Buying</span></div>
+      <p class="qtext" style="font-size:14px">Did our staff assist you in selecting the right gift?</p>
+      <div class="opts g2">
+        <button class="opt" onclick="subpick(this,'A1c')"><span class="oi">✅</span>Yes, very helpful</button>
+        <button class="opt" onclick="subpick(this,'A1c')"><span class="oi">😐</span>Somewhat helpful</button>
+        <button class="opt" onclick="subpick(this,'A1c')"><span class="oi">❌</span>No assistance at all</button>
+        <button class="opt" onclick="subpick(this,'A1c')"><span class="oi">🚶</span>Preferred to browse myself</button>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nA1" onclick="nxt('A1','A2')">Continue →</button>
+</div>
+
+<!-- A2 -->
+<div class="qc" id="A2">
+  <div class="ql"><div class="qnum">A2</div><span class="qtag">Visit Frequency</span></div>
+  <p class="qtext">How often do you visit Trends & Footwear?</p>
+  <div class="opts">
+    <button class="opt" onclick="single(this,'A2','first')"><span class="oi">🌟</span>This is my first visit</button>
+    <button class="opt" onclick="single(this,'A2','rare')"><span class="oi">📅</span>Once or twice a year</button>
+    <button class="opt" onclick="single(this,'A2','season')"><span class="oi">🍂</span>Every season (3–4 times/year)</button>
+    <button class="opt" onclick="single(this,'A2','monthly')"><span class="oi">🗓️</span>Once a month</button>
+    <button class="opt" onclick="single(this,'A2','frequent')"><span class="oi">🔥</span>Multiple times a month</button>
+  </div>
+  <!-- sub: first visit -->
+  <div class="sub-wrap" id="A2s-first">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">A2a</div><span class="qtag">Discovery</span></div>
+      <p class="qtext" style="font-size:14px">How did you hear about Trends & Footwear?</p>
+      <div class="chips" id="chips-A2a">
+        <span class="chip" onclick="chip(this,'A2a')">Instagram / Facebook</span>
+        <span class="chip" onclick="chip(this,'A2a')">Google Search</span>
+        <span class="chip" onclick="chip(this,'A2a')">Friend / Family</span>
+        <span class="chip" onclick="chip(this,'A2a')">Walked past the store</span>
+        <span class="chip" onclick="chip(this,'A2a')">YouTube / Reels</span>
+        <span class="chip" onclick="chip(this,'A2a')">Newspaper / Flyer</span>
+        <span class="chip" onclick="chip(this,'A2a')">Mall directory</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nA2" onclick="nxt('A2','A3')">Continue →</button>
+</div>
+
+<!-- A3 -->
+<div class="qc" id="A3">
+  <div class="ql"><div class="qnum">A3</div><span class="qtag">Customer Type</span></div>
+  <p class="qtext">Which best describes you as a footwear shopper?</p>
+  <div class="opts g2">
+    <button class="opt" onclick="single(this,'A3','budget')"><span class="oi">💰</span>Budget-conscious</button>
+    <button class="opt" onclick="single(this,'A3','brand')"><span class="oi">🏷️</span>Brand loyal</button>
+    <button class="opt" onclick="single(this,'A3','trendy')"><span class="oi">✨</span>Trend follower</button>
+    <button class="opt" onclick="single(this,'A3','comfort')"><span class="oi">🛋️</span>Comfort-first</button>
+    <button class="opt" onclick="single(this,'A3','occasion')"><span class="oi">🎉</span>Occasion-based buyer</button>
+    <button class="opt" onclick="single(this,'A3','collector')"><span class="oi">👟</span>Shoe enthusiast / collector</button>
+  </div>
+  <button class="nbtn" id="nA3" onclick="nxt('A3','A4')">Continue →</button>
+</div>
+
+<!-- A4 -->
+<div class="qc" id="A4">
+  <div class="ql"><div class="qnum">A4</div><span class="qtag">Age Group</span></div>
+  <p class="qtext">Which age group do you fall in?</p>
+  <div class="opts g2">
+    <button class="opt" onclick="single(this,'A4','u18')"><span class="oi">🧒</span>Under 18</button>
+    <button class="opt" onclick="single(this,'A4','18')"><span class="oi">🧑</span>18 – 25</button>
+    <button class="opt" onclick="single(this,'A4','26')"><span class="oi">👨</span>26 – 35</button>
+    <button class="opt" onclick="single(this,'A4','36')"><span class="oi">🧔</span>36 – 45</button>
+    <button class="opt" onclick="single(this,'A4','46')"><span class="oi">👴</span>46 – 60</button>
+    <button class="opt" onclick="single(this,'A4','60p')"><span class="oi">👵</span>Above 60</button>
+  </div>
+  <button class="nbtn" id="nA4" onclick="nxt('A4','secB','B1')">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION B — STAFF SERVICE
+══════════════════════════════════════ -->
+<div class="sec-head" id="secB"><div class="sh-line"></div><span class="sh-label">🧑‍💼 B · Staff Service</span><div class="sh-line"></div></div>
+
+<!-- B1 -->
+<div class="qc" id="B1">
+  <div class="ql"><div class="qnum">B1</div><span class="qtag">First Impression</span></div>
+  <p class="qtext">Were you greeted when you entered the store?</p>
+  <div class="opts g2">
+    <button class="opt" onclick="pick(this,'B1','yes')"><span class="oi">😊</span>Yes, warmly greeted</button>
+    <button class="opt" onclick="pick(this,'B1','ok')"><span class="oi">🙂</span>Acknowledged but briefly</button>
+    <button class="opt" onclick="pick(this,'B1','no')"><span class="oi">😶</span>No one acknowledged me</button>
+    <button class="opt" onclick="pick(this,'B1','busy')"><span class="oi">😕</span>Staff were too busy</button>
+  </div>
+  <!-- sub: no / busy -->
+  <div class="sub-wrap" id="B1s-no">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B1a</div><span class="qtag">Impact</span></div>
+      <p class="qtext" style="font-size:14px">How did not being greeted affect your experience?</p>
+      <div class="opts">
+        <button class="opt" onclick="subpick(this,'B1a')"><span class="oi">😡</span>It made me feel unwelcome — I almost left</button>
+        <button class="opt" onclick="subpick(this,'B1a')"><span class="oi">😐</span>Slightly off-putting but I continued</button>
+        <button class="opt" onclick="subpick(this,'B1a')"><span class="oi">🤷</span>Didn't bother me much</button>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="B1s-busy">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B1b</div><span class="qtag">Staffing</span></div>
+      <p class="qtext" style="font-size:14px">Do you feel there were enough staff members on the floor?</p>
+      <div class="opts g2">
+        <button class="opt" onclick="subpick(this,'B1b')"><span class="oi">✅</span>Yes, adequate</button>
+        <button class="opt" onclick="subpick(this,'B1b')"><span class="oi">⚠️</span>Slightly understaffed</button>
+        <button class="opt" onclick="subpick(this,'B1b')"><span class="oi">❌</span>Very understaffed</button>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nB1" onclick="nxt('B1','B2')">Continue →</button>
+</div>
+
+<!-- B2 -->
+<div class="qc" id="B2">
+  <div class="ql"><div class="qnum">B2</div><span class="qtag">Product Knowledge</span></div>
+  <p class="qtext">How well did our staff know about the products when you asked?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'B2','expert')"><span class="oi">🌟</span>Expert – answered everything confidently</button>
+    <button class="opt" onclick="pick(this,'B2','good')"><span class="oi">👍</span>Good – mostly knew the answers</button>
+    <button class="opt" onclick="pick(this,'B2','avg')"><span class="oi">😐</span>Average – gave vague answers</button>
+    <button class="opt" onclick="pick(this,'B2','poor')"><span class="oi">👎</span>Poor – didn't know the products well</button>
+    <button class="opt" onclick="pick(this,'B2','na')"><span class="oi">🚫</span>I didn't ask any staff</button>
+  </div>
+  <!-- sub: avg / poor -->
+  <div class="sub-wrap" id="B2s-poor">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B2a</div><span class="qtag">Knowledge Gap</span></div>
+      <p class="qtext" style="font-size:14px">What information were they unable to provide?</p>
+      <div class="chips" id="chips-B2a">
+        <span class="chip" onclick="chip(this,'B2a')">Brand / material details</span>
+        <span class="chip" onclick="chip(this,'B2a')">Size availability</span>
+        <span class="chip" onclick="chip(this,'B2a')">Price & discounts</span>
+        <span class="chip" onclick="chip(this,'B2a')">Warranty / return policy</span>
+        <span class="chip" onclick="chip(this,'B2a')">Care & maintenance tips</span>
+        <span class="chip" onclick="chip(this,'B2a')">Comparison between models</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="B2s-avg">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B2b</div><span class="qtag">Knowledge Gap</span></div>
+      <p class="qtext" style="font-size:14px">What information were they unable to provide?</p>
+      <div class="chips" id="chips-B2b">
+        <span class="chip" onclick="chip(this,'B2b')">Brand / material details</span>
+        <span class="chip" onclick="chip(this,'B2b')">Size availability</span>
+        <span class="chip" onclick="chip(this,'B2b')">Price & discounts</span>
+        <span class="chip" onclick="chip(this,'B2b')">Warranty / return policy</span>
+        <span class="chip" onclick="chip(this,'B2b')">Comparison between models</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nB2" onclick="nxt('B2','B3')">Continue →</button>
+</div>
+
+<!-- B3 -->
+<div class="qc" id="B3">
+  <div class="ql"><div class="qnum">B3</div><span class="qtag">Attitude & Tone</span></div>
+  <p class="qtext">How would you describe the staff's attitude during your visit?</p>
+  <div class="opts">
+    <button class="opt" onclick="single(this,'B3','warm')"><span class="oi">😊</span>Warm, patient and genuinely helpful</button>
+    <button class="opt" onclick="single(this,'B3','formal')"><span class="oi">🤝</span>Professional but somewhat formal</button>
+    <button class="opt" onclick="single(this,'B3','rush')"><span class="oi">⏩</span>Seemed rushed or distracted</button>
+    <button class="opt" onclick="single(this,'B3','pushy')"><span class="oi">😬</span>Pushy / tried to oversell</button>
+    <button class="opt" onclick="single(this,'B3','rude')"><span class="oi">😤</span>Rude or dismissive</button>
+  </div>
+  <!-- sub: pushy / rude -->
+  <div class="sub-wrap" id="B3s-pushy">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B3a</div><span class="qtag">Pushy Behaviour</span></div>
+      <p class="qtext" style="font-size:14px">How did the pushy behaviour affect your shopping experience?</p>
+      <div class="opts">
+        <button class="opt" onclick="subpick(this,'B3a')"><span class="oi">😠</span>Made me uncomfortable — I wanted to leave</button>
+        <button class="opt" onclick="subpick(this,'B3a')"><span class="oi">😐</span>Slightly annoying but I managed</button>
+        <button class="opt" onclick="subpick(this,'B3a')"><span class="oi">🤷</span>Didn't affect me much</button>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="B3s-rude">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B3b</div><span class="qtag">Incident</span></div>
+      <p class="qtext" style="font-size:14px">Please briefly describe what happened (optional but very helpful):</p>
+      <textarea class="ta" placeholder="e.g. The staff member ignored my question and walked away..."></textarea>
+    </div>
+  </div>
+  <button class="nbtn" id="nB3" onclick="nxt('B3','B4')">Continue →</button>
+</div>
+
+<!-- B4 -->
+<div class="qc" id="B4">
+  <div class="ql"><div class="qnum">B4</div><span class="qtag">Assistance Speed</span></div>
+  <p class="qtext">How quickly did staff attend to you when you needed help?</p>
+  <div class="opts g2">
+    <button class="opt" onclick="single(this,'B4','instant')"><span class="oi">⚡</span>Immediately</button>
+    <button class="opt" onclick="single(this,'B4','ok')"><span class="oi">🕐</span>Within 2 minutes</button>
+    <button class="opt" onclick="single(this,'B4','long')"><span class="oi">⏳</span>Had to wait 5+ minutes</button>
+    <button class="opt" onclick="single(this,'B4','none')"><span class="oi">❌</span>No one came to help me</button>
+  </div>
+  <!-- sub: long / none -->
+  <div class="sub-wrap" id="B4s-none">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B4a</div><span class="qtag">No Assistance</span></div>
+      <p class="qtext" style="font-size:14px">What did you need help with that went unaddressed?</p>
+      <div class="chips" id="chips-B4a">
+        <span class="chip" onclick="chip(this,'B4a')">Finding a specific product</span>
+        <span class="chip" onclick="chip(this,'B4a')">Getting a different size</span>
+        <span class="chip" onclick="chip(this,'B4a')">Price / offer enquiry</span>
+        <span class="chip" onclick="chip(this,'B4a')">Opening a fitting room</span>
+        <span class="chip" onclick="chip(this,'B4a')">Billing help</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nB4" onclick="nxt('B4','B5')">Continue →</button>
+</div>
+
+<!-- B5 -->
+<div class="qc" id="B5">
+  <div class="ql"><div class="qnum">B5</div><span class="qtag">Personalisation</span></div>
+  <p class="qtext">Did the staff recommend products tailored to your preferences?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'B5','yes')"><span class="oi">🎯</span>Yes — spot-on recommendations</button>
+    <button class="opt" onclick="pick(this,'B5','partial')"><span class="oi">🤏</span>Somewhat — but not quite right</button>
+    <button class="opt" onclick="pick(this,'B5','random')"><span class="oi">🎲</span>Just showed random options</button>
+    <button class="opt" onclick="pick(this,'B5','no')"><span class="oi">🚫</span>No recommendations made</button>
+  </div>
+  <div class="sub-wrap" id="B5s-partial">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">B5a</div><span class="qtag">Miss</span></div>
+      <p class="qtext" style="font-size:14px">What aspect did the recommendation miss?</p>
+      <div class="chips" id="chips-B5a">
+        <span class="chip" onclick="chip(this,'B5a')">My budget range</span>
+        <span class="chip" onclick="chip(this,'B5a')">Style / colour preference</span>
+        <span class="chip" onclick="chip(this,'B5a')">Occasion suitability</span>
+        <span class="chip" onclick="chip(this,'B5a')">Comfort requirements</span>
+        <span class="chip" onclick="chip(this,'B5a')">Size availability</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nB5" onclick="nxt('B5','secC','C1')">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION C — STORE ENVIRONMENT
+══════════════════════════════════════ -->
+<div class="sec-head" id="secC"><div class="sh-line"></div><span class="sh-label">🏪 C · Store Environment</span><div class="sh-line"></div></div>
+
+<!-- C1 -->
+<div class="qc" id="C1">
+  <div class="ql"><div class="qnum">C1</div><span class="qtag">Cleanliness</span></div>
+  <p class="qtext">How clean and tidy was the store during your visit?</p>
+  <p class="qhint">Rate each aspect — tap the emoji that matches</p>
+  <div id="C1-ratings">
+    <div class="rating-group"><div class="rating-label">Floor & shelves</div><div class="star-row" data-k="floor"></div></div>
+    <div class="rating-group"><div class="rating-label">Fitting / trial rooms</div><div class="star-row" data-k="fit"></div></div>
+    <div class="rating-group"><div class="rating-label">Restrooms (if used)</div><div class="star-row" data-k="rest"></div></div>
+    <div class="rating-group"><div class="rating-label">Product display area</div><div class="star-row" data-k="disp"></div></div>
+  </div>
+  <div class="sub-wrap" id="C1s-low">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">C1a</div><span class="qtag">Issue</span></div>
+      <p class="qtext" style="font-size:14px">What cleaning or tidiness issue did you notice?</p>
+      <textarea class="ta" placeholder="e.g. Fitting room had leftover shoe boxes, floor near entrance was dusty..."></textarea>
+    </div>
+  </div>
+  <button class="nbtn" id="nC1" onclick="nxt('C1','C2')">Continue →</button>
+</div>
+
+<!-- C2 -->
+<div class="qc" id="C2">
+  <div class="ql"><div class="qnum">C2</div><span class="qtag">Layout & Navigation</span></div>
+  <p class="qtext">How easy was it to find what you were looking for inside the store?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'C2','easy')"><span class="oi">🗺️</span>Very easy — well-organised layout</button>
+    <button class="opt" onclick="pick(this,'C2','ok')"><span class="oi">🙂</span>Manageable with some searching</button>
+    <button class="opt" onclick="pick(this,'C2','hard')"><span class="oi">😕</span>Confusing — categories not clear</button>
+    <button class="opt" onclick="pick(this,'C2','noSign')"><span class="oi">🪧</span>No signage / labels to guide me</button>
+  </div>
+  <div class="sub-wrap" id="C2s-hard">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">C2a</div><span class="qtag">Navigation Problem</span></div>
+      <p class="qtext" style="font-size:14px">Which section was hardest to locate?</p>
+      <div class="chips" id="chips-C2a">
+        <span class="chip" onclick="chip(this,'C2a')">Men's section</span>
+        <span class="chip" onclick="chip(this,'C2a')">Women's section</span>
+        <span class="chip" onclick="chip(this,'C2a')">Kids' section</span>
+        <span class="chip" onclick="chip(this,'C2a')">Sports footwear</span>
+        <span class="chip" onclick="chip(this,'C2a')">Formal / office wear</span>
+        <span class="chip" onclick="chip(this,'C2a')">Accessories & care products</span>
+        <span class="chip" onclick="chip(this,'C2a')">Sale / discount rack</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="C2s-noSign">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">C2b</div><span class="qtag">Signage</span></div>
+      <p class="qtext" style="font-size:14px">What type of signage would help most?</p>
+      <div class="chips" id="chips-C2b">
+        <span class="chip" onclick="chip(this,'C2b')">Category banners (Men / Women / Kids)</span>
+        <span class="chip" onclick="chip(this,'C2b')">Size guides on shelves</span>
+        <span class="chip" onclick="chip(this,'C2b')">Floor arrows / trail</span>
+        <span class="chip" onclick="chip(this,'C2b')">Digital display board at entrance</span>
+        <span class="chip" onclick="chip(this,'C2b')">Price tags more visible</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nC2" onclick="nxt('C2','C3')">Continue →</button>
+</div>
+
+<!-- C3 -->
+<div class="qc" id="C3">
+  <div class="ql"><div class="qnum">C3</div><span class="qtag">Ambience</span></div>
+  <p class="qtext">How was the overall ambience of the store?</p>
+  <div class="opts g2">
+    <button class="opt" onclick="single(this,'C3','great')"><span class="oi">✨</span>Energetic & inviting</button>
+    <button class="opt" onclick="single(this,'C3','calm')"><span class="oi">🌿</span>Calm & comfortable</button>
+    <button class="opt" onclick="single(this,'C3','loud')"><span class="oi">🔊</span>Too loud / music too high</button>
+    <button class="opt" onclick="single(this,'C3','dull')"><span class="oi">😴</span>Dull / uninspiring</button>
+    <button class="opt" onclick="single(this,'C3','crowd')"><span class="oi">👥</span>Too crowded & overwhelming</button>
+  </div>
+  <button class="nbtn" id="nC3" onclick="nxt('C3','C4')">Continue →</button>
+</div>
+
+<!-- C4 -->
+<div class="qc" id="C4">
+  <div class="ql"><div class="qnum">C4</div><span class="qtag">Fitting Area</span></div>
+  <p class="qtext">How was your experience with the shoe trial / fitting area?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'C4','great')"><span class="oi">🌟</span>Clean, spacious and well-stocked with socks</button>
+    <button class="opt" onclick="pick(this,'C4','ok')"><span class="oi">👍</span>Fine — functional but basic</button>
+    <button class="opt" onclick="pick(this,'C4','crowd')"><span class="oi">😤</span>Too crowded — had to wait for a seat</button>
+    <button class="opt" onclick="pick(this,'C4','dirty')"><span class="oi">🧹</span>Unclean / shoe boxes scattered</button>
+    <button class="opt" onclick="pick(this,'C4','na')"><span class="oi">🚫</span>Didn't use the fitting area</button>
+  </div>
+  <div class="sub-wrap" id="C4s-dirty">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">C4a</div><span class="qtag">Fitting Issue</span></div>
+      <p class="qtext" style="font-size:14px">What specifically was the problem in the fitting area?</p>
+      <div class="chips" id="chips-C4a">
+        <span class="chip" onclick="chip(this,'C4a')">Leftover shoe boxes on floor</span>
+        <span class="chip" onclick="chip(this,'C4a')">Dirty / torn socks provided</span>
+        <span class="chip" onclick="chip(this,'C4a')">Mirror was dirty / missing</span>
+        <span class="chip" onclick="chip(this,'C4a')">No seating</span>
+        <span class="chip" onclick="chip(this,'C4a')">Shoe horn not available</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nC4" onclick="nxt('C4','secD','D1')">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION D — PRODUCTS & INVENTORY
+══════════════════════════════════════ -->
+<div class="sec-head" id="secD"><div class="sh-line"></div><span class="sh-label">👟 D · Products & Inventory</span><div class="sh-line"></div></div>
+
+<!-- D1 -->
+<div class="qc" id="D1">
+  <div class="ql"><div class="qnum">D1</div><span class="qtag">Availability</span></div>
+  <p class="qtext">Were you able to find your preferred style and size today?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'D1','both')"><span class="oi">✅</span>Yes — style and size both available</button>
+    <button class="opt" onclick="pick(this,'D1','style')"><span class="oi">🎨</span>Style available but not my size</button>
+    <button class="opt" onclick="pick(this,'D1','size')"><span class="oi">📐</span>Size available but not my preferred style</button>
+    <button class="opt" onclick="pick(this,'D1','neither')"><span class="oi">❌</span>Neither was available</button>
+    <button class="opt" onclick="pick(this,'D1','settle')"><span class="oi">🤏</span>I settled for a second choice</button>
+  </div>
+  <div class="sub-wrap" id="D1s-style">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">D1a</div><span class="qtag">Missing Size</span></div>
+      <p class="qtext" style="font-size:14px">Which size were you looking for?</p>
+      <div class="chips" id="chips-D1a">
+        <span class="chip" onclick="chip(this,'D1a')">UK 3–4 (Small women / kids)</span>
+        <span class="chip" onclick="chip(this,'D1a')">UK 5–6</span>
+        <span class="chip" onclick="chip(this,'D1a')">UK 7–8</span>
+        <span class="chip" onclick="chip(this,'D1a')">UK 9–10</span>
+        <span class="chip" onclick="chip(this,'D1a')">UK 11–12</span>
+        <span class="chip" onclick="chip(this,'D1a')">UK 13+ (Large)</span>
+        <span class="chip" onclick="chip(this,'D1a')">Wide fit</span>
+        <span class="chip" onclick="chip(this,'D1a')">Narrow fit</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="D1s-neither">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">D1b</div><span class="qtag">Gap</span></div>
+      <p class="qtext" style="font-size:14px">What kind of footwear were you unable to find?</p>
+      <textarea class="ta" placeholder="e.g. Ethnic kolhapuri sandals in size 9, white leather formal shoes below ₹1500..."></textarea>
+    </div>
+  </div>
+  <div class="sub-wrap" id="D1s-settle">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">D1c</div><span class="qtag">Compromise</span></div>
+      <p class="qtext" style="font-size:14px">What did you compromise on?</p>
+      <div class="chips" id="chips-D1c">
+        <span class="chip" onclick="chip(this,'D1c')">Colour</span>
+        <span class="chip" onclick="chip(this,'D1c')">Brand</span>
+        <span class="chip" onclick="chip(this,'D1c')">Price range</span>
+        <span class="chip" onclick="chip(this,'D1c')">Style / design</span>
+        <span class="chip" onclick="chip(this,'D1c')">Size (slightly off)</span>
+        <span class="chip" onclick="chip(this,'D1c')">Material</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nD1" onclick="nxt('D1','D2')">Continue →</button>
+</div>
+
+<!-- D2 -->
+<div class="qc" id="D2">
+  <div class="ql"><div class="qnum">D2</div><span class="qtag">Product Quality</span></div>
+  <p class="qtext">How do you rate the quality of the footwear you examined or purchased?</p>
+  <p class="qhint">Rate from 😡 (very poor) to 🤩 (excellent)</p>
+  <div id="D2-ratings">
+    <div class="rating-group"><div class="rating-label">Build quality & stitching</div><div class="star-row" data-k="build"></div></div>
+    <div class="rating-group"><div class="rating-label">Material & finish</div><div class="star-row" data-k="mat"></div></div>
+    <div class="rating-group"><div class="rating-label">Sole grip & durability</div><div class="star-row" data-k="sole"></div></div>
+    <div class="rating-group"><div class="rating-label">Comfort & fit</div><div class="star-row" data-k="comf"></div></div>
+  </div>
+  <div class="sub-wrap" id="D2s-low">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">D2a</div><span class="qtag">Quality Issue</span></div>
+      <p class="qtext" style="font-size:14px">What quality problem did you notice?</p>
+      <div class="chips" id="chips-D2a">
+        <span class="chip" onclick="chip(this,'D2a')">Loose stitching</span>
+        <span class="chip" onclick="chip(this,'D2a')">Sole detaching</span>
+        <span class="chip" onclick="chip(this,'D2a')">Poor inner lining</span>
+        <span class="chip" onclick="chip(this,'D2a')">Colour fading / peeling</span>
+        <span class="chip" onclick="chip(this,'D2a')">Unpleasant smell</span>
+        <span class="chip" onclick="chip(this,'D2a')">Uncomfortable insole</span>
+        <span class="chip" onclick="chip(this,'D2a')">Weak buckle / lace</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nD2" onclick="nxt('D2','D3')">Continue →</button>
+</div>
+
+<!-- D3 -->
+<div class="qc" id="D3">
+  <div class="ql"><div class="qnum">D3</div><span class="qtag">Brand Range</span></div>
+  <p class="qtext">How satisfied are you with the variety of brands available?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'D3','great')"><span class="oi">🌟</span>Excellent — great mix of brands</button>
+    <button class="opt" onclick="pick(this,'D3','ok')"><span class="oi">👍</span>Good — covers most of what I need</button>
+    <button class="opt" onclick="pick(this,'D3','limited')"><span class="oi">🤏</span>Limited — need more variety</button>
+    <button class="opt" onclick="pick(this,'D3','premium')"><span class="oi">💎</span>Need more premium / international brands</button>
+    <button class="opt" onclick="pick(this,'D3','budget')"><span class="oi">💰</span>Need more affordable / local brands</button>
+  </div>
+  <div class="sub-wrap" id="D3s-limited">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">D3a</div><span class="qtag">Missing Brands</span></div>
+      <p class="qtext" style="font-size:14px">Which brands would you like us to stock?</p>
+      <textarea class="ta" placeholder="e.g. Puma, Woodland, Red Tape, Bata, Relaxo, Metro, Liberty…"></textarea>
+    </div>
+  </div>
+  <button class="nbtn" id="nD3" onclick="nxt('D3','D4')">Continue →</button>
+</div>
+
+<!-- D4 -->
+<div class="qc" id="D4">
+  <div class="ql"><div class="qnum">D4</div><span class="qtag">Trending Products</span></div>
+  <p class="qtext">Did you find the latest trending footwear styles in store?</p>
+  <div class="opts g2">
+    <button class="opt" onclick="single(this,'D4','yes')"><span class="oi">✅</span>Yes, very trendy collection</button>
+    <button class="opt" onclick="single(this,'D4','some')"><span class="oi">🙂</span>Some, but not all</button>
+    <button class="opt" onclick="single(this,'D4','old')"><span class="oi">📦</span>Mostly old / last season stock</button>
+    <button class="opt" onclick="single(this,'D4','noIdea')"><span class="oi">🤷</span>I'm not sure what's trending</button>
+  </div>
+  <button class="nbtn" id="nD4" onclick="nxt('D4','secE','E1')">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION E — PRICING & VALUE
+══════════════════════════════════════ -->
+<div class="sec-head" id="secE"><div class="sh-line"></div><span class="sh-label">💰 E · Pricing & Value</span><div class="sh-line"></div></div>
+
+<!-- E1 -->
+<div class="qc" id="E1">
+  <div class="ql"><div class="qnum">E1</div><span class="qtag">Price Perception</span></div>
+  <p class="qtext">Overall, how do you perceive our pricing compared to competitors?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'E1','cheap')"><span class="oi">💚</span>Cheaper — great value for money</button>
+    <button class="opt" onclick="pick(this,'E1','fair')"><span class="oi">👌</span>Fair — similar to market price</button>
+    <button class="opt" onclick="pick(this,'E1','high')"><span class="oi">🔴</span>Expensive — prices are too high</button>
+    <button class="opt" onclick="pick(this,'E1','unclear')"><span class="oi">🤔</span>Prices weren't clearly displayed</button>
+    <button class="opt" onclick="pick(this,'E1','inconsist')"><span class="oi">⚠️</span>Inconsistent — some good, some overpriced</button>
+  </div>
+  <div class="sub-wrap" id="E1s-high">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">E1a</div><span class="qtag">Price Concern</span></div>
+      <p class="qtext" style="font-size:14px">Which category felt overpriced to you?</p>
+      <div class="chips" id="chips-E1a">
+        <span class="chip" onclick="chip(this,'E1a')">Sports / athletic shoes</span>
+        <span class="chip" onclick="chip(this,'E1a')">Casual sneakers</span>
+        <span class="chip" onclick="chip(this,'E1a')">Formal shoes</span>
+        <span class="chip" onclick="chip(this,'E1a')">Sandals & chappals</span>
+        <span class="chip" onclick="chip(this,'E1a')">Kids footwear</span>
+        <span class="chip" onclick="chip(this,'E1a')">Accessories (socks, insoles)</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="E1s-unclear">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">E1b</div><span class="qtag">Price Display</span></div>
+      <p class="qtext" style="font-size:14px">Where were price tags missing or unclear?</p>
+      <div class="chips" id="chips-E1b">
+        <span class="chip" onclick="chip(this,'E1b')">Tags fallen off shoes</span>
+        <span class="chip" onclick="chip(this,'E1b')">Price on shelf not matching product</span>
+        <span class="chip" onclick="chip(this,'E1b')">Discount / sale price not shown</span>
+        <span class="chip" onclick="chip(this,'E1b')">MRP vs selling price confusing</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nE1" onclick="nxt('E1','E2')">Continue →</button>
+</div>
+
+<!-- E2 -->
+<div class="qc" id="E2">
+  <div class="ql"><div class="qnum">E2</div><span class="qtag">Offers & Discounts</span></div>
+  <p class="qtext">How satisfied are you with the current offers and discounts?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'E2','great')"><span class="oi">🎉</span>Great — attractive and clearly communicated</button>
+    <button class="opt" onclick="pick(this,'E2','ok')"><span class="oi">🙂</span>Okay — standard discounts</button>
+    <button class="opt" onclick="pick(this,'E2','poor')"><span class="oi">😕</span>Disappointing — very few offers</button>
+    <button class="opt" onclick="pick(this,'E2','confuse')"><span class="oi">😵</span>Confusing — offer terms not clear</button>
+    <button class="opt" onclick="pick(this,'E2','noknow')"><span class="oi">❓</span>Wasn't aware of any offers</button>
+  </div>
+  <div class="sub-wrap" id="E2s-poor">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">E2a</div><span class="qtag">Offer Request</span></div>
+      <p class="qtext" style="font-size:14px">What type of offers would excite you?</p>
+      <div class="chips" id="chips-E2a">
+        <span class="chip" onclick="chip(this,'E2a')">Buy 1 Get 1</span>
+        <span class="chip" onclick="chip(this,'E2a')">Flat % off on brands</span>
+        <span class="chip" onclick="chip(this,'E2a')">Festive / seasonal sale</span>
+        <span class="chip" onclick="chip(this,'E2a')">Loyalty points cashback</span>
+        <span class="chip" onclick="chip(this,'E2a')">Student / senior discount</span>
+        <span class="chip" onclick="chip(this,'E2a')">Combo deals (shoes + accessories)</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="E2s-confuse">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">E2b</div><span class="qtag">Clarity</span></div>
+      <p class="qtext" style="font-size:14px">Which part of the offer was confusing?</p>
+      <div class="chips" id="chips-E2b">
+        <span class="chip" onclick="chip(this,'E2b')">Terms & conditions too complex</span>
+        <span class="chip" onclick="chip(this,'E2b')">Applicable products not marked</span>
+        <span class="chip" onclick="chip(this,'E2b')">Discount not reflected at billing</span>
+        <span class="chip" onclick="chip(this,'E2b')">Validity period unclear</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nE2" onclick="nxt('E2','E3')">Continue →</button>
+</div>
+
+<!-- E3 -->
+<div class="qc" id="E3">
+  <div class="ql"><div class="qnum">E3</div><span class="qtag">Payment</span></div>
+  <p class="qtext">How was your billing and payment experience?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'E3','smooth')"><span class="oi">✅</span>Smooth — quick and hassle-free</button>
+    <button class="opt" onclick="pick(this,'E3','wait')"><span class="oi">⏳</span>Had to wait in a long queue</button>
+    <button class="opt" onclick="pick(this,'E3','error')"><span class="oi">⚠️</span>There was a billing error</button>
+    <button class="opt" onclick="pick(this,'E3','payment')"><span class="oi">💳</span>Payment machine had issues</button>
+    <button class="opt" onclick="pick(this,'E3','noMode')"><span class="oi">📵</span>My preferred payment mode wasn't available</button>
+  </div>
+  <div class="sub-wrap" id="E3s-error">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">E3a</div><span class="qtag">Billing Error</span></div>
+      <p class="qtext" style="font-size:14px">What kind of billing error occurred?</p>
+      <div class="opts">
+        <button class="opt" onclick="subpick(this,'E3a')"><span class="oi">💸</span>Charged wrong price / extra amount</button>
+        <button class="opt" onclick="subpick(this,'E3a')"><span class="oi">🎁</span>Discount not applied at counter</button>
+        <button class="opt" onclick="subpick(this,'E3a')"><span class="oi">🧾</span>Wrong item billed</button>
+        <button class="opt" onclick="subpick(this,'E3a')"><span class="oi">🪙</span>Change / refund issue</button>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="E3s-noMode">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">E3b</div><span class="qtag">Payment Mode</span></div>
+      <p class="qtext" style="font-size:14px">Which payment mode did you need?</p>
+      <div class="chips" id="chips-E3b">
+        <span class="chip" onclick="chip(this,'E3b')">UPI (GPay / PhonePe / Paytm)</span>
+        <span class="chip" onclick="chip(this,'E3b')">Credit card EMI</span>
+        <span class="chip" onclick="chip(this,'E3b')">Debit card</span>
+        <span class="chip" onclick="chip(this,'E3b')">Net banking</span>
+        <span class="chip" onclick="chip(this,'E3b')">Gift voucher / store credit</span>
+        <span class="chip" onclick="chip(this,'E3b')">Cash on delivery (future)</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nE3" onclick="nxt('E3','secF','F1')">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION F — POST-PURCHASE & LOYALTY
+══════════════════════════════════════ -->
+<div class="sec-head" id="secF"><div class="sh-line"></div><span class="sh-label">🏆 F · After-Sale & Loyalty</span><div class="sh-line"></div></div>
+
+<!-- F1 -->
+<div class="qc" id="F1">
+  <div class="ql"><div class="qnum">F1</div><span class="qtag">After-Sale Support</span></div>
+  <p class="qtext">Have you ever needed after-sale support (warranty claim, repair, exchange) from Trends & Footwear?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'F1','yes-good')"><span class="oi">✅</span>Yes — it was handled well</button>
+    <button class="opt" onclick="pick(this,'F1','yes-bad')"><span class="oi">❌</span>Yes — the experience was poor</button>
+    <button class="opt" onclick="pick(this,'F1','no')"><span class="oi">🚫</span>No, never needed it</button>
+    <button class="opt" onclick="pick(this,'F1','noknow')"><span class="oi">❓</span>Didn't know after-sale support exists</button>
+  </div>
+  <div class="sub-wrap" id="F1s-yes-bad">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">F1a</div><span class="qtag">Support Failure</span></div>
+      <p class="qtext" style="font-size:14px">What went wrong with the after-sale support?</p>
+      <div class="chips" id="chips-F1a">
+        <span class="chip" onclick="chip(this,'F1a')">Claim was rejected unfairly</span>
+        <span class="chip" onclick="chip(this,'F1a')">Staff were unhelpful / dismissive</span>
+        <span class="chip" onclick="chip(this,'F1a')">Process took too long</span>
+        <span class="chip" onclick="chip(this,'F1a')">Replacement quality was worse</span>
+        <span class="chip" onclick="chip(this,'F1a')">No communication / follow-up</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nF1" onclick="nxt('F1','F2')">Continue →</button>
+</div>
+
+<!-- F2 -->
+<div class="qc" id="F2">
+  <div class="ql"><div class="qnum">F2</div><span class="qtag">Loyalty Program</span></div>
+  <p class="qtext">Are you a member of the Trends & Footwear loyalty / rewards program?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'F2','yes')"><span class="oi">🥇</span>Yes, I'm an active member</button>
+    <button class="opt" onclick="pick(this,'F2','lapsed')"><span class="oi">😴</span>I signed up but don't use it</button>
+    <button class="opt" onclick="pick(this,'F2','noknow')"><span class="oi">❓</span>I didn't know there was one</button>
+    <button class="opt" onclick="pick(this,'F2','notint')"><span class="oi">🙅</span>Not interested in loyalty programs</button>
+  </div>
+  <div class="sub-wrap" id="F2s-yes">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">F2a</div><span class="qtag">Loyalty Rating</span></div>
+      <p class="qtext" style="font-size:14px">How satisfied are you with the loyalty benefits?</p>
+      <div class="opts">
+        <button class="opt" onclick="subpick(this,'F2a')"><span class="oi">🌟</span>Very satisfied — excellent perks</button>
+        <button class="opt" onclick="subpick(this,'F2a')"><span class="oi">🙂</span>Okay — could offer more value</button>
+        <button class="opt" onclick="subpick(this,'F2a')"><span class="oi">😕</span>Disappointed — rarely useful rewards</button>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="F2s-lapsed">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">F2b</div><span class="qtag">Reactivation</span></div>
+      <p class="qtext" style="font-size:14px">What would make you actively use the loyalty program again?</p>
+      <div class="chips" id="chips-F2b">
+        <span class="chip" onclick="chip(this,'F2b')">More frequent discounts</span>
+        <span class="chip" onclick="chip(this,'F2b')">Points that don't expire quickly</span>
+        <span class="chip" onclick="chip(this,'F2b')">Birthday / anniversary reward</span>
+        <span class="chip" onclick="chip(this,'F2b')">Exclusive member-only sale</span>
+        <span class="chip" onclick="chip(this,'F2b')">Referral bonus</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="F2s-notint">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">F2c</div><span class="qtag">What Would Work</span></div>
+      <p class="qtext" style="font-size:14px">What would make a loyalty program worth joining?</p>
+      <div class="chips" id="chips-F2c">
+        <span class="chip" onclick="chip(this,'F2c')">Instant cashback (not points)</span>
+        <span class="chip" onclick="chip(this,'F2c')">Free shoe cleaning service</span>
+        <span class="chip" onclick="chip(this,'F2c')">Early access to new arrivals</span>
+        <span class="chip" onclick="chip(this,'F2c')">Priority billing queue</span>
+        <span class="chip" onclick="chip(this,'F2c')">Free insole / accessories with purchase</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nF2" onclick="nxt('F2','F3')">Continue →</button>
+</div>
+
+<!-- F3 -->
+<div class="qc" id="F3">
+  <div class="ql"><div class="qnum">F3</div><span class="qtag">Communication</span></div>
+  <p class="qtext">How do you prefer to receive updates, offers, and new arrivals from us?</p>
+  <p class="qhint">Select all that apply</p>
+  <div class="multi-note">↑ Multi-select</div>
+  <div class="chips" id="chips-F3">
+    <span class="chip" onclick="chip(this,'F3')">WhatsApp messages</span>
+    <span class="chip" onclick="chip(this,'F3')">SMS / text alerts</span>
+    <span class="chip" onclick="chip(this,'F3')">Instagram / Facebook posts</span>
+    <span class="chip" onclick="chip(this,'F3')">Email newsletter</span>
+    <span class="chip" onclick="chip(this,'F3')">In-store posters / banners</span>
+    <span class="chip" onclick="chip(this,'F3')">No communications please</span>
+  </div>
+  <button class="nbtn" id="nF3" onclick="nxt('F3','secG','G1')">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION G — OVERALL & NPS
+══════════════════════════════════════ -->
+<div class="sec-head" id="secG"><div class="sh-line"></div><span class="sh-label">⭐ G · Overall Experience</span><div class="sh-line"></div></div>
+
+<!-- G1 -->
+<div class="qc" id="G1">
+  <div class="ql"><div class="qnum">G1</div><span class="qtag">Overall Rating</span></div>
+  <p class="qtext">How would you rate your overall experience at Trends & Footwear today?</p>
+  <p class="qhint">Rate from 😡 (terrible) to 🤩 (amazing)</p>
+  <div id="G1-ratings">
+    <div class="rating-group"><div class="rating-label">Staff service quality</div><div class="star-row" data-k="staff"></div></div>
+    <div class="rating-group"><div class="rating-label">Product range & availability</div><div class="star-row" data-k="prod"></div></div>
+    <div class="rating-group"><div class="rating-label">Store cleanliness & layout</div><div class="rating-label"></div><div class="star-row" data-k="store"></div></div>
+    <div class="rating-group"><div class="rating-label">Pricing & value for money</div><div class="star-row" data-k="price"></div></div>
+    <div class="rating-group"><div class="rating-label">Billing & checkout speed</div><div class="star-row" data-k="bill"></div></div>
+  </div>
+  <div class="sub-wrap" id="G1s-low">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">G1a</div><span class="qtag">Low Rating Reason</span></div>
+      <p class="qtext" style="font-size:14px">What disappointed you most today?</p>
+      <textarea class="ta" placeholder="Tell us the main reason(s) for the low rating…"></textarea>
+    </div>
+  </div>
+  <button class="nbtn" id="nG1" onclick="nxt('G1','G2')">Continue →</button>
+</div>
+
+<!-- G2 — NPS -->
+<div class="qc" id="G2">
+  <div class="ql"><div class="qnum">G2</div><span class="qtag">Recommendation (NPS)</span></div>
+  <p class="qtext">How likely are you to recommend Trends & Footwear to a friend or family member?</p>
+  <p class="qhint">0 = Never, 10 = Absolutely will!</p>
+  <div class="nps-row" id="npsRow"></div>
+  <p class="nps-lbl" id="npsLbl"></p>
+  <div class="sub-wrap" id="G2s-detract">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">G2a</div><span class="qtag">Detractor Reason</span></div>
+      <p class="qtext" style="font-size:14px">What would we need to improve for you to recommend us?</p>
+      <div class="chips" id="chips-G2a">
+        <span class="chip" onclick="chip(this,'G2a')">Better product variety</span>
+        <span class="chip" onclick="chip(this,'G2a')">More competitive pricing</span>
+        <span class="chip" onclick="chip(this,'G2a')">Faster billing</span>
+        <span class="chip" onclick="chip(this,'G2a')">Friendlier staff</span>
+        <span class="chip" onclick="chip(this,'G2a')">Cleaner store</span>
+        <span class="chip" onclick="chip(this,'G2a')">Better loyalty rewards</span>
+        <span class="chip" onclick="chip(this,'G2a')">More parking / accessibility</span>
+      </div>
+    </div>
+  </div>
+  <div class="sub-wrap" id="G2s-promo">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">G2b</div><span class="qtag">Promoter Praise</span></div>
+      <p class="qtext" style="font-size:14px">What would you highlight when recommending us?</p>
+      <div class="chips" id="chips-G2b">
+        <span class="chip" onclick="chip(this,'G2b')">Wide product range</span>
+        <span class="chip" onclick="chip(this,'G2b')">Great prices / deals</span>
+        <span class="chip" onclick="chip(this,'G2b')">Helpful friendly staff</span>
+        <span class="chip" onclick="chip(this,'G2b')">Good location</span>
+        <span class="chip" onclick="chip(this,'G2b')">Premium ambience</span>
+        <span class="chip" onclick="chip(this,'G2b')">Fast & easy checkout</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nG2" onclick="nxt('G2','G3')">Continue →</button>
+</div>
+
+<!-- G3 -->
+<div class="qc" id="G3">
+  <div class="ql"><div class="qnum">G3</div><span class="qtag">Competitor Comparison</span></div>
+  <p class="qtext">Compared to other footwear stores you visit, how does Trends & Footwear rank?</p>
+  <div class="opts">
+    <button class="opt" onclick="pick(this,'G3','best')"><span class="oi">🥇</span>Best — my go-to store</button>
+    <button class="opt" onclick="pick(this,'G3','good')"><span class="oi">🥈</span>Among my top 2–3 choices</button>
+    <button class="opt" onclick="pick(this,'G3','avg')"><span class="oi">🥉</span>Average — I alternate with others</button>
+    <button class="opt" onclick="pick(this,'G3','last')"><span class="oi">😕</span>Other stores are better</button>
+  </div>
+  <div class="sub-wrap" id="G3s-last">
+    <div class="qc sub vis show active">
+      <div class="ql"><div class="qnum s">G3a</div><span class="qtag">Competitor Edge</span></div>
+      <p class="qtext" style="font-size:14px">What do other stores do better than us?</p>
+      <div class="chips" id="chips-G3a">
+        <span class="chip" onclick="chip(this,'G3a')">Wider product selection</span>
+        <span class="chip" onclick="chip(this,'G3a')">Lower prices</span>
+        <span class="chip" onclick="chip(this,'G3a')">Better staff service</span>
+        <span class="chip" onclick="chip(this,'G3a')">Better location / parking</span>
+        <span class="chip" onclick="chip(this,'G3a')">Cleaner / nicer store</span>
+        <span class="chip" onclick="chip(this,'G3a')">Better loyalty program</span>
+        <span class="chip" onclick="chip(this,'G3a')">Online ordering option</span>
+      </div>
+    </div>
+  </div>
+  <button class="nbtn" id="nG3" onclick="nxt('G3','G4')">Continue →</button>
+</div>
+
+<!-- G4 — Final open feedback -->
+<div class="qc" id="G4">
+  <div class="ql"><div class="qnum">G4</div><span class="qtag">Open Feedback</span></div>
+  <p class="qtext">Is there anything else you'd like us to know? Any suggestions, compliments, or concerns?</p>
+  <p class="qhint">Be as specific as you like — we read every single response personally.</p>
+  <textarea class="ta" id="finalFeedback" style="min-height:110px" placeholder="Share anything — what made you smile, what frustrated you, what you wish we had, ideas for improvement…"></textarea>
+  <button class="nbtn vis" id="nG4" onclick="showSubmit()" style="margin-top:16px">Review & Submit 🎯</button>
+</div>
+
+<!-- SUBMIT -->
+<button class="sbtn" id="submitBtn" onclick="doSubmit()">🎉 Submit & Claim Your ₹200 Reward</button>
+
+</div><!-- end wrap -->
+
+<!-- THANK YOU -->
+<div class="ty" id="tyScreen">
+  <span class="ty-icon">🏆</span>
+  <h2>You're Incredible!</h2>
+  <p>Thank you for taking the time to give us such detailed feedback. Every answer you shared helps our team serve you and every future customer better.</p>
+  <div class="xp-earn" id="xpEarned">⚡ +0 XP Earned</div>
+  <div class="coupon" style="max-width:480px;margin:28px auto 0">
+    <p class="c-tag">🎁 Your exclusive reward</p>
+    <div class="c-val">₹200 OFF</div>
+    <p style="font-size:13px;color:#6B7280;margin-top:6px">on your next purchase of ₹999 or above</p>
+    <div class="c-code">TRENDS200</div>
+    <p style="font-size:11px;color:#6B7280;margin-top:10px">Valid 45 days · Show this screen at billing counter</p>
+  </div>
+</div>
+
+<script>
+const TOTAL = 20; // main question cards
+let done = {}, xp = 0, XPQ = 20;
+const secNames = {A1:'Visitor Profile',A2:'Visitor Profile',A3:'Visitor Profile',A4:'Visitor Profile',B1:'Staff Service',B2:'Staff Service',B3:'Staff Service',B4:'Staff Service',B5:'Staff Service',C1:'Store Environment',C2:'Store Environment',C3:'Store Environment',C4:'Store Environment',D1:'Products & Inventory',D2:'Products & Inventory',D3:'Products & Inventory',D4:'Products & Inventory',E1:'Pricing & Value',E2:'Pricing & Value',E3:'Pricing & Value',F1:'After-Sale & Loyalty',F2:'After-Sale & Loyalty',F3:'After-Sale & Loyalty',G1:'Overall Experience',G2:'Overall Experience',G3:'Overall Experience',G4:'Overall Experience'};
+
+function upd(){
+  const n=Object.keys(done).length;
+  const pct=Math.round(n/TOTAL*100);
+  document.getElementById('pbFill').style.width=pct+'%';
+  document.getElementById('pbPct').textContent=pct+'%';
+  document.getElementById('xpPill').textContent='⚡ '+xp+' XP';
+}
+
+function mark(id){
+  if(!done[id]){done[id]=true;xp+=XPQ;upd();}
+}
+
+// single-choice in main card
+function pick(btn,qid,val){
+  const card=document.getElementById(qid);
+  card.querySelectorAll(':scope > .opts > .opt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  card.classList.add('active');
+  // hide all direct subs
+  card.querySelectorAll(':scope > .sub-wrap').forEach(s=>s.classList.remove('open'));
+  // show matching sub
+  const sub=document.getElementById(qid+'s-'+val);
+  if(sub)sub.classList.add('open');
+  // special multi-sub cases
+  if(qid==='B2'&&(val==='avg'))document.getElementById('B2s-avg')&&document.getElementById('B2s-avg').classList.add('open');
+  if(qid==='B3'&&val==='rude')document.getElementById('B3s-rude')&&document.getElementById('B3s-rude').classList.add('open');
+  if(qid==='B4'&&val==='long'){const s=document.getElementById('B4s-none');if(s)s.classList.add('open');}
+  if(qid==='B1'&&val==='busy')document.getElementById('B1s-busy')&&document.getElementById('B1s-busy').classList.add('open');
+  mark(qid);
+  document.getElementById('n'+qid)&&document.getElementById('n'+qid).classList.add('vis');
+}
+
+function single(btn,qid,val){
+  const parent=btn.closest('.qc');
+  parent.querySelectorAll(':scope > .opts > .opt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  mark(qid);
+  document.getElementById('n'+qid)&&document.getElementById('n'+qid).classList.add('vis');
+}
+
+function subpick(btn,id){
+  const parent=btn.closest('.qc.sub');
+  parent.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function chip(el,group){
+  el.classList.toggle('sel');
+  const qid=group.replace(/[a-z]$/i,'').replace(/[^A-Z0-9]/g,'');
+  const mainId=group.match(/^([A-Z]\d+)/)?group.match(/^([A-Z]\d+)/)[1]:null;
+  if(mainId){mark(mainId);}
+  const nb=document.getElementById('n'+mainId);
+  if(nb)nb.classList.add('vis');
+}
+
+function nxt(from,secId,firstQ){
+  // show section header
+  if(secId && secId.startsWith('sec')){
+    const sh=document.getElementById(secId);
+    if(sh)sh.classList.add('vis');
+    if(firstQ){const fc=document.getElementById(firstQ);if(fc){fc.classList.add('show');setTimeout(()=>{fc.classList.add('vis','active');fc.scrollIntoView({behavior:'smooth',block:'start'});},50);}
+    document.getElementById('secPill').textContent=secNames[firstQ]||'';
+    return;}
+  }
+  // plain next card
+  const next=document.getElementById(secId);
+  if(next){next.classList.add('show');setTimeout(()=>{next.classList.add('vis','active');next.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  document.getElementById('secPill').textContent=secNames[secId]||'';}
+}
+
+// ---- STAR BUILDERS ----
+const emojis=['😡','😕','😐','😊','🤩'];
+function buildStarsIn(containerId,onDone){
+  const cont=document.getElementById(containerId)||document.querySelector('#'+containerId);
+  const rows=(cont||document).querySelectorAll(containerId?'#'+containerId+' .star-row':'.star-row');
+  rows.forEach(row=>{
+    for(let i=1;i<=5;i++){
+      const b=document.createElement('button');
+      b.className='star-btn';b.textContent=emojis[i-1];
+      b.onclick=function(){
+        row.querySelectorAll('.star-btn').forEach((s,idx)=>idx<i?s.classList.add('lit'):s.classList.remove('lit'));
+        if(onDone)onDone(row,i);
+      };
+      row.appendChild(b);
+    }
+  });
+}
+
+buildStarsIn('C1-ratings',function(row,score){
+  if(score<=2)document.getElementById('C1s-low').classList.add('open');
+  const rows=document.querySelectorAll('#C1-ratings .star-row');
+  const allDone=[...rows].every(r=>r.querySelectorAll('.star-btn.lit').length>0);
+  if(allDone){mark('C1');document.getElementById('nC1').classList.add('vis');}
+});
+
+buildStarsIn('D2-ratings',function(row,score){
+  if(score<=2)document.getElementById('D2s-low').classList.add('open');
+  const rows=document.querySelectorAll('#D2-ratings .star-row');
+  const allDone=[...rows].every(r=>r.querySelectorAll('.star-btn.lit').length>0);
+  if(allDone){mark('D2');document.getElementById('nD2').classList.add('vis');}
+});
+
+buildStarsIn('G1-ratings',function(row,score){
+  if(score<=2)document.getElementById('G1s-low').classList.add('open');
+  const rows=document.querySelectorAll('#G1-ratings .star-row');
+  const allDone=[...rows].every(r=>r.querySelectorAll('.star-btn.lit').length>0);
+  if(allDone){mark('G1');document.getElementById('nG1').classList.add('vis');}
+});
+
+// ---- NPS ----
+const npsEmoji=['😡','😞','😟','😕','😐','🙂','😊','😁','😄','🤩','🥳'];
+const npsTxt=['Not at all likely','','','','Neutral','','','','','Very likely','100% recommend!'];
+function buildNPS(){
+  const row=document.getElementById('npsRow');
+  for(let i=0;i<=10;i++){
+    const b=document.createElement('button');
+    b.className='nps-btn';
+    b.innerHTML='<span class="ne">'+npsEmoji[i]+'</span><span>'+i+'</span>';
+    b.onclick=function(){
+      row.querySelectorAll('.nps-btn').forEach(x=>x.classList.remove('lit'));
+      b.classList.add('lit');
+      document.getElementById('npsLbl').textContent=npsTxt[i];
+      document.getElementById('G2s-detract').classList.remove('open');
+      document.getElementById('G2s-promo').classList.remove('open');
+      if(i<=6)document.getElementById('G2s-detract').classList.add('open');
+      else if(i>=9)document.getElementById('G2s-promo').classList.add('open');
+      mark('G2');document.getElementById('nG2').classList.add('vis');
+    };
+    row.appendChild(b);
+  }
+}
+buildNPS();
+
+function showSubmit(){
+  mark('G4');
+  const sb=document.getElementById('submitBtn');
+  sb.classList.add('vis');
+  setTimeout(()=>sb.scrollIntoView({behavior:'smooth',block:'center'}),100);
+}
+
+// ---- GOOGLE SHEETS ENDPOINT ----
+// STEP 1: Paste your Google Apps Script Web App URL below after deployment
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyOI-Q1h81_8p6BFPnwNvRdKsxoydRf1s0re-6zw2FedysqU9xmAqnjZE0G1N9wzt550w/exec';
+
+function collectAllData(){
+  const data = {};
+
+  // Helper: get selected .opt text in a card
+  function getOpt(cardId){
+    const card = document.getElementById(cardId);
+    if(!card) return '';
+    const sel = card.querySelector(':scope > .opts > .opt.sel');
+    return sel ? sel.innerText.replace(/^[^\w₹]*/,'').trim() : '';
+  }
+
+  // Helper: get selected chips text
+  function getChips(containerId){
+    const cont = document.getElementById(containerId);
+    if(!cont) return '';
+    return [...cont.querySelectorAll('.chip.sel')].map(c=>c.textContent.trim()).join(', ');
+  }
+
+  // Helper: get textarea value
+  function getTa(cardId, placeholder){
+    const card = document.getElementById(cardId);
+    if(!card) return '';
+    const ta = card.querySelector('textarea');
+    return ta ? ta.value.trim() : '';
+  }
+
+  // Helper: get NPS score
+  function getNPS(){
+    const lit = document.querySelector('#npsRow .nps-btn.lit span:last-child');
+    return lit ? lit.textContent.trim() : '';
+  }
+
+  // Helper: get star/emoji ratings
+  function getStarRatings(containerId){
+    const cont = document.getElementById(containerId);
+    if(!cont) return '';
+    const rows = cont.querySelectorAll('.star-row');
+    return [...rows].map(row=>{
+      const label = row.closest('.rating-group')?.querySelector('.rating-label')?.textContent.trim() || '';
+      const score = row.querySelectorAll('.star-btn.lit').length;
+      return label+':'+score;
+    }).join(' | ');
+  }
+
+  // Section A
+  data['A1_VisitPurpose']     = getOpt('A1');
+  data['A1a_BrowseReason']    = document.querySelector('#A1s-browse .opt.sel') ? document.querySelector('#A1s-browse .opt.sel').innerText.trim() : '';
+  data['A1b_ExchangeReason']  = document.querySelector('#A1s-exchange .opt.sel') ? document.querySelector('#A1s-exchange .opt.sel').innerText.trim() : '';
+  data['A1c_GiftAssist']      = document.querySelector('#A1s-gift .opt.sel') ? document.querySelector('#A1s-gift .opt.sel').innerText.trim() : '';
+  data['A2_VisitFrequency']   = getOpt('A2');
+  data['A2a_Discovery']       = getChips('chips-A2a');
+  data['A3_CustomerType']     = getOpt('A3');
+  data['A4_AgeGroup']         = getOpt('A4');
+
+  // Section B
+  data['B1_Greeting']         = getOpt('B1');
+  data['B1a_NoGreetImpact']   = document.querySelector('#B1s-no .opt.sel') ? document.querySelector('#B1s-no .opt.sel').innerText.trim() : '';
+  data['B1b_Staffing']        = document.querySelector('#B1s-busy .opt.sel') ? document.querySelector('#B1s-busy .opt.sel').innerText.trim() : '';
+  data['B2_ProductKnowledge'] = getOpt('B2');
+  data['B2a_KnowledgeGap']    = getChips('chips-B2a');
+  data['B2b_KnowledgeGap2']   = getChips('chips-B2b');
+  data['B3_StaffAttitude']    = getOpt('B3');
+  data['B3b_RudeIncident']    = getTa('B3');
+  data['B4_AssistSpeed']      = getOpt('B4');
+  data['B4a_NoAssistReason']  = getChips('chips-B4a');
+  data['B5_Personalisation']  = getOpt('B5');
+  data['B5a_RecoMiss']        = getChips('chips-B5a');
+
+  // Section C
+  data['C1_Cleanliness']      = getStarRatings('C1-ratings');
+  data['C1a_CleanIssue']      = getTa('C1');
+  data['C2_Layout']           = getOpt('C2');
+  data['C2a_NavProblem']      = getChips('chips-C2a');
+  data['C2b_Signage']         = getChips('chips-C2b');
+  data['C3_Ambience']         = getOpt('C3');
+  data['C4_FittingArea']      = getOpt('C4');
+  data['C4a_FittingIssue']    = getChips('chips-C4a');
+
+  // Section D
+  data['D1_Availability']     = getOpt('D1');
+  data['D1a_MissingSize']     = getChips('chips-D1a');
+  data['D1b_ProductGap']      = getTa('D1');
+  data['D1c_Compromise']      = getChips('chips-D1c');
+  data['D2_ProductQuality']   = getStarRatings('D2-ratings');
+  data['D2a_QualityIssue']    = getChips('chips-D2a');
+  data['D3_BrandRange']       = getOpt('D3');
+  data['D3a_MissingBrands']   = getTa('D3');
+  data['D4_TrendingProducts'] = getOpt('D4');
+
+  // Section E
+  data['E1_PricePerception']  = getOpt('E1');
+  data['E1a_OverpricedCat']   = getChips('chips-E1a');
+  data['E1b_PriceDisplay']    = getChips('chips-E1b');
+  data['E2_Offers']           = getOpt('E2');
+  data['E2a_OfferRequest']    = getChips('chips-E2a');
+  data['E2b_OfferClarity']    = getChips('chips-E2b');
+  data['E3_Payment']          = getOpt('E3');
+  data['E3a_BillingError']    = document.querySelector('#E3s-error .opt.sel') ? document.querySelector('#E3s-error .opt.sel').innerText.trim() : '';
+  data['E3b_PaymentMode']     = getChips('chips-E3b');
+
+  // Section F
+  data['F1_AfterSale']        = getOpt('F1');
+  data['F1a_SupportFail']     = getChips('chips-F1a');
+  data['F2_Loyalty']          = getOpt('F2');
+  data['F2a_LoyaltyRating']   = document.querySelector('#F2s-yes .opt.sel') ? document.querySelector('#F2s-yes .opt.sel').innerText.trim() : '';
+  data['F2b_Reactivation']    = getChips('chips-F2b');
+  data['F2c_WhatWouldWork']   = getChips('chips-F2c');
+  data['F3_CommPref']         = getChips('chips-F3');
+
+  // Section G
+  data['G1_OverallRating']    = getStarRatings('G1-ratings');
+  data['G1a_LowReason']       = getTa('G1');
+  data['G2_NPS']              = getNPS();
+  data['G2a_DetractorReason'] = getChips('chips-G2a');
+  data['G2b_PromoterPraise']  = getChips('chips-G2b');
+  data['G3_Competitor']       = getOpt('G3');
+  data['G3a_CompEdge']        = getChips('chips-G3a');
+  data['G4_OpenFeedback']     = document.getElementById('finalFeedback') ? document.getElementById('finalFeedback').value.trim() : '';
+
+  data['XP_Earned']           = xp;
+
+  return data;
+}
+
+async function doSubmit(){
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.textContent = '⏳ Submitting…';
+  submitBtn.disabled = true;
+
+  const formData = collectAllData();
+
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(formData)
+    });
+  } catch(e){
+    console.warn('Sheet submission error:', e);
+  }
+
+  document.getElementById('survWrap').style.display='none';
+  document.querySelector('.prog-bar').style.display='none';
+  document.querySelector('.hero').style.display='none';
+  const ty=document.getElementById('tyScreen');
+  ty.classList.add('show');
+  document.getElementById('xpEarned').textContent='⚡ +'+xp+' XP Earned!';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ---- INIT ----
+document.getElementById('A1').classList.add('vis','active');
+document.getElementById('secA').classList.add('vis');
+document.getElementById('secPill').textContent='Visitor Profile';
+upd();
+
+// F3 chips — auto-mark
+document.querySelectorAll('#chips-F3 .chip').forEach(c=>{
+  c.addEventListener('click',function(){mark('F3');document.getElementById('nF3').classList.add('vis');});
+});
+</script>
+</body>
+</html>
